@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+
+    <script>
+        let windW = window.innerWidth;
+        let windH = window.innerHeight;
+
+        let horizontalOri = (windW > windH) ? true: false;
+
+
+        let stuff = (new URLSearchParams(window.location.search)).get("userId");
+
+        if(stuff){
+          if(horizontalOri){
+              document.write("<meta name=\"viewport\" id=\"view\" content=\"width=device-width, initial-scale=1, maximum-scale=0.4, user-scalable=no\">");
+          } else {
+              document.write("<meta name=\"viewport\" id=\"view\" content=\"width=device-width, initial-scale=1, maximum-scale=0.3, user-scalable=no\">");
+          }
+       } else {
+         let viewScale = 1;
+
+         let canvW = 1280;
+         let canvH = 720;
+
+         let wRat = windW/windH;
+         let cRat = canvW/canvH;
+
+         if(horizontalOri){
+             if(wRat > cRat){
+               viewScale = (windH/canvH)-0.2;
+             } else {
+               viewScale = (windW/canvW)-0.2;
+             }
+             document.write("<meta name=\"viewport\" id=\"view\" content=\"width=device-width, initial-scale=" + viewScale + ", maximum-scale=3.0, user-scalable=no\">");
+         } else {
+             if(wRat > cRat){
+               viewScale = (windH/canvH)-0.5;
+             } else {
+               viewScale = (windW/canvW)-0.5;
+             }
+           document.write("<meta name=\"viewport\" id=\"view\" content=\"width=device-width, initial-scale=" + viewScale + ", maximum-scale=3.0, user-scalable=no\">");
+         }
+       }
+     </script>
+
+    <title>Mustache Land</title>
+    <link rel="shortcut icon" href="/Game/favicon.ico"/>
+    <style>
+            @font-face {
+              font-family: 'Fixedsys';
+              font-style: normal;
+              font-weight: normal;
+              font-smooth: never;
+              src: local('Fixedsys Excelsior 3.01'), url('FSEX300.woff') format('woff');
+            }
+
+            h1{
+              color:White;
+              font-family: 'Fixedsys';
+              font-size: "100px";
+              text-align: "center";
+              position: "absolute";
+            }
+
+            p{
+              color:White;
+              font-size:21px;
+            }
+            canvas{
+              border: 1px solid White;
+              -webkit-font-smoothing : none;
+            }
+
+    </style>
+    <body style="background-color:black;">
+    <canvas id="Canvas" width="1280" height="720" onclick="Click()"></canvas>
+    <!--<p id="Info">Cooldown</p>-->
+    <style> body {padding: 0; margin: 0;} html{margin:0;} </style>
+    <script src="dataLoader.js"></script>
+    <script src="startScreen.js"></script>
+    <script src="helper.js"></script>
+    <script src="objects.js"></script>
+    <script src="bonusObjects.js"></script>
+    <script src="level.js"></script>
+    <script src="bonusLevel.js"></script>
+    <script src="script.js"></script>
+  </head>
+  <body>
+  </body>
+</html>
