@@ -2,7 +2,7 @@ ctx.font = "40px Fixedsys";
 
 gameRestart();
 
-var state = levelStep;
+var state = loadScreen;
 
 function step(){
 

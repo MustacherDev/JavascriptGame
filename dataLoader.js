@@ -120,7 +120,7 @@ hit.volume = 0.5;
 soundsArr.push(hit);
 
 var blip       = new Audio("audio/BlipSoft.mp3");
-blip.volume = 0.2;
+blip.volume = 0.1;
 soundsArr.push(blip);
 
 var warn       = new Audio("audio/Warn.mp3");
@@ -169,8 +169,8 @@ soundsArr.push(snd_powerUp);
 var snd_deathTemptation = new Audio("audio/Death Temptation.mp3");
 soundsArr.push(snd_deathTemptation);
 
-var snd_perfect = new Audio("audio/Perfect Sound.mp3");
-snd_perfect.volume = 0.4;
+var snd_perfect = new Audio("audio/PerfectRun.mp3");
+snd_perfect.volume = 0.6;
 soundsArr.push(snd_perfect);
 
 
