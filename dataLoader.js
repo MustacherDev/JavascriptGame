@@ -176,15 +176,15 @@ soundsArr.push(snd_perfect);
 
 
 // Loading sprite
-var ghostBody  = new Image();
-ghostBody.src  = "sprites/Ghost Body.png";
+var imgGhostBody  = new Image();
+imgGhostBody.src  = "sprites/Ghost Body.png";
 
 var ghostSheet = new Image();
 ghostSheet.src = "sprites/Ghost Feet Sheet.png";
 
-var ghosty     = new Image();
-ghosty.src     = "sprites/Ghost Icon.png";
-var spr_Ghosty = new Sprite(ghosty, 16, 16, 0, 0);
+var imgGhosty     = new Image();
+imgGhosty.src     = "sprites/Ghost Icon.png";
+var spr_Ghosty = new Sprite(imgGhosty, 16, 16, 0, 0);
 
 var nonPlayerSheet = new Image();
 nonPlayerSheet.src = "sprites/nonActualPlayer.png";
@@ -208,7 +208,7 @@ var spr_Death  = new Sprite(deathSheet, 32, 32, 16, 16);
 
 var dustSheet  = new Image();
 dustSheet.src  = "sprites/Dust.png";
-var spr_Dust = new Sprite(ghosty, 16, 16, 8, 8);
+var spr_Dust = new Sprite(imgGhosty, 16, 16, 0, 0);
 dustSheet.onload = function(){spr_Dust = new Sprite(dustSheet, 16, 16, 8, 8);}
 
 
@@ -216,21 +216,30 @@ var itemSheet  = new Image();
 itemSheet.src  = "sprites/Items.png";
 var spr_Items  = new Sprite(itemSheet, 16, 16, 8, 8);
 
-var speedIcon     = new Image();
-speedIcon.src     = "sprites/Speed Icon.png";
-var spr_SpeedIcon = new Sprite(speedIcon, 16, 16, 0, 0);
+var imgSpeedIcon     = new Image();
+imgSpeedIcon.src     = "sprites/Speed Icon.png";
+var spr_SpeedIcon = new Sprite(imgSpeedIcon, 16, 16, 0, 0);
 
 var tutorialSheet = new Image();
 tutorialSheet.src = "sprites/tutorial.png";
 var spr_Tutorial  = new Sprite(tutorialSheet, 17, 17, 0, 0);
 
-var soundIcon    = new Image();
-soundIcon.src    = "sprites/soundIcon.png"
-var spr_Sound    = new Sprite(soundIcon, 16, 16, 0, 0);
 
-var arrowButton  = new Image();
-arrowButton.src  = "sprites/arrowButton.png";
-var spr_arrowButton = new Sprite(arrowButton, 9, 16, 0, 0);
+
+var backPropImg  = new Image();
+backPropImg.src  = "sprites/backgroundProps.png";
+var spr_Tiles    = new Sprite(backPropImg, 16, 16, 8, 8);
+backPropImg.onload = function(){spr_Tiles    = new Sprite(backPropImg, 16, 16, 8, 8);}
+
+
+
+var imgSoundIcon    = new Image();
+imgSoundIcon.src    = "sprites/soundIcon.png"
+var spr_Sound    = new Sprite(imgSoundIcon, 16, 16, 0, 0);
+
+var imgArrowButton  = new Image();
+imgArrowButton.src  = "sprites/arrowButton.png";
+var spr_arrowButton = new Sprite(imgArrowButton, 9, 16, 0, 0);
 
 var spotImg      = new Image();
 spotImg.src      = "sprites/Spot.png";
@@ -252,6 +261,4 @@ var fenceImg     = new Image();
 fenceImg.src     = "sprites/fence sheet.png";
 var spr_Fence    = new Sprite(fenceImg, 16, 16, 0, 0);
 
-var backPropImg  = new Image();
-backPropImg.src  = "sprites/background props.png";
-var spr_Tiles    = new Sprite(backPropImg, 16, 16, 8, 8);
+

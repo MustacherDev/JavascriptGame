@@ -24,18 +24,18 @@ function BoundBox(x1, y1, x2, y2){
   }
 }
 
-function Tile(x, y, sprite, scl, imgX, imgY){
+function Tile(x, y, scl, imgX, imgY){
   this.x = x;
   this.y = y;
   this.scl = scl;
-  this.sprite = sprite;
+  this.sprite = spr_Tiles;
   this.imgX = imgX;
   this.imgY = imgY;
 
   this.facing = sign(Math.random() - 0.5);
 
   this.show = function(){
-    this.sprite.draw(this.x, this.y, this.imgX, this.imgY, this.scl*this.facing, this.scl);
+    spr_Tiles.draw(this.x, this.y, this.imgX, this.imgY, this.scl*this.facing, this.scl);
   }
 }
 
@@ -456,7 +456,7 @@ function Ghosty(x, y){
 
   this.show = function(){
     this.frames++;
-      ctx.drawImage(ghosty, 0, 0, 16, 16, this.x, this.y + (Math.sin(this.frames/10)*8),  16*this.scl, 16*this.scl);
+      ctx.drawImage(imgGhosty, 0, 0, 16, 16, this.x, this.y + (Math.sin(this.frames/10)*8),  16*this.scl, 16*this.scl);
   }
 
   this.update = function(){
@@ -464,20 +464,12 @@ function Ghosty(x, y){
     if(this.active){
       if(finishingLevel){
         if(this.attached){
-          this.xxAt += this.hspd + randomRange(-3, 3);
-          this.yyAt += this.vspd + randomRange(-3, 3);
+          this.xxAt += randomRange(-1, 1);
+          this.yyAt += randomRange(-1, 1);
 
           this.x = death.x + this.xAt + this.xxAt;
           this.y = death.y + this.yAt + this.yyAt;
 
-          this.hspd += -2*(this.xxAt);
-          this.hspd = clamp(this.hspd, -8, 8);
-
-          this.vspd += -2*(this.yyAt);
-          this.vspd = clamp(this.vspd, -8, 8);
-
-          this.hspd *= 0.98;
-          this.vspd *= 0.98;
         } else {
           let dx = death.x + death.xOffset - this.x;
           let dy = death.y + death.yOffset - this.y;
@@ -485,14 +477,16 @@ function Ghosty(x, y){
           let dist = dx*dx + dy*dy;
 
           // Scarying death
-          if(dist < 400){
+	
+
+          if(pointInRect(this.x, this.y, death.x+death.scl*4, death.y+death.scl*4, death.x+(death.sprWidth-4)*death.scl, death.y + (death.sprHeight-4)*death.scl)){
             death.ghostyAttached++;
             death.runningAway = true;
             death.attacking = false;
             this.attached = true;
 
-            this.xAt = death.x - this.x;
-            this.yAt = death.y - this.y;
+            this.xAt = -death.x + this.x;
+            this.yAt = -death.y + this.y;
           }
 
           this.hspd += 40*dx/dist;
@@ -979,6 +973,10 @@ function Gravestone(x, y, type, content){
     case 2:
       this.boundBox = (new BoundBox(0, 1, 18, 18)).scale(this.scl, this.scl);
       break;
+
+default:
+this.boundBox = (new BoundBox(0, 1, 18, 18)).scale(this.scl, this.scl);
+break;
   }
 
   this.getBoundBox = function(){
@@ -1903,7 +1901,7 @@ function Death(x, y, level){
         // Shakes Trying to Flee Offscreen
         if((width-this.x) > width/2){
           this.facing = -1;
-          this.x -= this.spd*0.85;
+          this.x -= this.spd*0.7;
           if(this.x < -(100 + (this.sprWidth*this.scl))){
             this.active = false;
             if(!gameover){
@@ -1912,7 +1910,7 @@ function Death(x, y, level){
           }
         } else {
           this.facing = 1;
-          this.x += this.spd*0.85;
+          this.x += this.spd*0.7;
           if(this.x > width + 100){
             this.active = false;
             if(!gameover){
@@ -1922,8 +1920,8 @@ function Death(x, y, level){
         }
 
         // Shaking
-        this.x += (Math.random()*5 +(-2.5))*this.ghostyAttached;
-        this.y += (Math.random()*5 +(-2.5))*this.ghostyAttached;
+        this.x += (Math.random()*1 +(-0.25))*this.ghostyAttached;
+        this.y += (Math.random()*1 +(-0.25))*this.ghostyAttached;
       }
     }
   }

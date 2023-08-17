@@ -503,13 +503,18 @@ function roomCreate(levelNum) {
 
             // Gravestone Typing
             let gravType = Math.random();
-            if (gravType < 0.77) {
+            if (gravType < 0.5) {
                 gravType = 0;
-            } else if (gravType < 0.97) {
+            } else if (gravType < 0.75) {
                 gravType = 1;
-            } else {
+            } else if (gravType < 0.875){
                 gravType = 2;
-            }
+            } else if (gravType < 0.9375){
+		gravType  = 3;
+	    } else {
+		gravType = (Math.random() > 0.25) ? 4 : 5;
+		}
+		
 
             let obj = new Gravestone(xx + randx, yy + randy, gravType, c);
             if (graveLayout == "rat") {
@@ -520,7 +525,7 @@ function roomCreate(levelNum) {
 
             let hasFlower = (Math.random() < 0.1) ? true : false;
             if (hasFlower) {
-                let randType = (level > 1) ? Math.floor(Math.abs((Math.random() * 3) - 0.2)) : Math.floor(Math.abs((Math.random() * 2) - 0.7));
+                let randType = (level > 1) ? Math.floor(Math.abs((Math.random() * 6) - 0.2)) : Math.floor(Math.abs((Math.random() * 2) - 0.7));
                 let flower = new Flower(obj.x + (obj.sprite.width * obj.scl) + randomRange(-40, 20), obj.y + (obj.sprite.height * obj.scl) - randomRange(50, 30), randType);
                 flowers.push(flower);
                 drawnableObjects.push(flower);
@@ -538,7 +543,7 @@ function roomCreate(levelNum) {
     // Background Tiles
     let tilesAvailable = [];
     let tileScl = 4;
-    let tiles = Math.floor(randomRange(4, 6));
+    let tiles = Math.floor(randomRange(10, 18));
     let tilesX = Math.ceil(width / (16 * tileScl));
     let tilesY = Math.ceil(height / (16 * tileScl));
     for (let i = 0; i < tilesX * tilesY; i++) {
@@ -553,7 +558,7 @@ function roomCreate(levelNum) {
         let tileType = Math.floor(Math.random() * 4);
         let xx = ((val % tilesX) * 16 * tileScl) + randomRange(-4, 4);
         let yy = (Math.floor(val / tilesX) * 16 * tileScl) + randomRange(-4, 4);
-        let tileNew = new Tile(xx - tileScl * 8, yy - tileScl * 8, spr_Tiles, tileScl, (tileType % spr_Tiles.imgNumX), Math.floor(tileType / spr_Tiles.imgNumY));
+        let tileNew = new Tile(xx - tileScl * 8, yy - tileScl * 8, tileScl, tileType*16, 0);
         backgroundTiles.push(tileNew);
     }
 
@@ -567,7 +572,7 @@ function roomCreate(levelNum) {
     for (let i = 0; i < flowerNum; i++) {
         let randx = Math.random() * width;
         let randy = Math.random() * height;
-        let randType = (level > 1) ? Math.floor(Math.abs((Math.random() * 3) - 0.2)) : Math.floor(Math.abs((Math.random() * 2) - 0.7));
+        let randType = (level > 1) ? Math.floor(Math.abs((Math.random() * 6) - 0.2)) : Math.floor(Math.abs((Math.random() * 2) - 0.7));
         let obj = new Flower(randx, randy, randType);
         flowers.push(obj);
         drawnableObjects.push(obj);
