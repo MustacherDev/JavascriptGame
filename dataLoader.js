@@ -174,91 +174,162 @@ snd_perfect.volume = 0.6;
 soundsArr.push(snd_perfect);
 
 
+var need2Load = 0;
+var dataLoaded = 0;
+
+var spr_Ghosty;
+
+var spr_Player;
+var spr_Gravestone;
+var spr_Flower;
+var spr_Rat;
+var spr_Death;
+var spr_Dust;
+var spr_Items;
+var spr_SpeedIcon;
+var spr_Tutorial;
+var spr_Tiles;
+var spr_Sound;
+
+function testLoad() {
+    dataLoaded++;
+    if (dataLoaded > need2Load) {
+        spr_Ghosty = new Sprite(imgGhosty, 16, 16, 0, 0);
+        spr_Player = new Sprite(nonPlayerSheet, 16, 16, 0, 0);
+        spr_Gravestone = new Sprite(gravestoneSheet, 19, 19, 0, 0);
+        spr_Flower = new Sprite(flowerSheet, 9, 13, 4, 0);
+        spr_Rat = new Sprite(ratSheet, 16, 7, 8, 0);
+        spr_Death = new Sprite(deathSheet, 32, 32, 16, 16);
+
+        spr_Dust = new Sprite(imgGhosty, 16, 16, 0, 0);
+        spr_Items = new Sprite(itemSheet, 16, 16, 8, 8);
+        spr_SpeedIcon = new Sprite(imgSpeedIcon, 16, 16, 0, 0);
+        spr_Tutorial = new Sprite(tutorialSheet, 17, 17, 0, 0);
+        spr_Tiles = new Sprite(backPropImg, 16, 16, 8, 8);
+        spr_Sound = new Sprite(imgSoundIcon, 16, 16, 0, 0);
+
+        spr_arrowButton = new Sprite(imgArrowButton, 9, 16, 0, 0);
+        
+        spr_Spot = new Sprite(spotImg, 16, 8, 8, 4);
+
+        spr_Coin = new Sprite(coinImg, 16, 16, 0, 0);
+
+        spr_Excl = new Sprite(exclImg, 16, 16, 0, 0);
+
+        spr_Friend = new Sprite(friendImg, 16, 16, 8, 8);
+
+        spr_Fence = new Sprite(fenceImg, 16, 16, 0, 0);
+
+
+
+
+    }
+}
 
 // Loading sprite
 var imgGhostBody  = new Image();
-imgGhostBody.src  = "sprites/Ghost Body.png";
+imgGhostBody.src = "sprites/Ghost Body.png";
+imgGhostBody.onLoad = testLoad();
 
 var ghostSheet = new Image();
+ghostSheet.onLoad = testLoad();
 ghostSheet.src = "sprites/Ghost Feet Sheet.png";
 
-var imgGhosty     = new Image();
+var imgGhosty = new Image();
+imgGhosty.onLoad = testLoad();
 imgGhosty.src     = "sprites/Ghost Icon.png";
-var spr_Ghosty = new Sprite(imgGhosty, 16, 16, 0, 0);
+
 
 var nonPlayerSheet = new Image();
+nonPlayerSheet.onLoad = testLoad();
 nonPlayerSheet.src = "sprites/nonActualPlayer.png";
 var spr_Player     = new Sprite(nonPlayerSheet, 16, 16, 0, 0);
 
 var gravestoneSheet = new Image();
+gravestoneSheet.onLoad = testLoad();
 gravestoneSheet.src = "sprites/Gravestone.png";
 var spr_Gravestone  = new Sprite(gravestoneSheet, 19, 19, 0, 0);
 
-var flowerSheet     = new Image();
-flowerSheet.src     = "sprites/Flower.png";
+var flowerSheet = new Image();
+flowerSheet.src = "sprites/Flower.png";
+flowerSheet.onLoad = testLoad();
 var spr_Flower      = new Sprite(flowerSheet, 9, 13, 4, 0);
 
 var ratSheet   = new Image();
-ratSheet.src   = "sprites/rat.png";
+ratSheet.src = "sprites/rat.png";
+ratSheet.onLoad = testLoad();
 var spr_Rat    = new Sprite(ratSheet, 16, 7, 8, 0);
 
 var deathSheet = new Image();
 deathSheet.src = "sprites/Death Sprite Sheet.png";
+deathSheet.onLoad = testLoad();
 var spr_Death  = new Sprite(deathSheet, 32, 32, 16, 16);
 
 var dustSheet  = new Image();
-dustSheet.src  = "sprites/Dust.png";
+dustSheet.src = "sprites/Dust.png";
+dustSheet.onLoad = testLoad();
 var spr_Dust = new Sprite(imgGhosty, 16, 16, 0, 0);
-dustSheet.onload = function(){spr_Dust = new Sprite(dustSheet, 16, 16, 8, 8);}
+
 
 
 var itemSheet  = new Image();
-itemSheet.src  = "sprites/Items.png";
+itemSheet.src = "sprites/Items.png";
+itemSheet.onLoad = testLoad();
 var spr_Items  = new Sprite(itemSheet, 16, 16, 8, 8);
 
 var imgSpeedIcon     = new Image();
-imgSpeedIcon.src     = "sprites/Speed Icon.png";
+imgSpeedIcon.src = "sprites/Speed Icon.png";
+imgSpeedIcon.onLoad = testLoad();
 var spr_SpeedIcon = new Sprite(imgSpeedIcon, 16, 16, 0, 0);
 
 var tutorialSheet = new Image();
 tutorialSheet.src = "sprites/tutorial.png";
+tutorialSheet.onLoad = testLoad();
 var spr_Tutorial  = new Sprite(tutorialSheet, 17, 17, 0, 0);
 
 
 
 var backPropImg  = new Image();
-backPropImg.src  = "sprites/backgroundProps.png";
+backPropImg.src = "sprites/backgroundProps.png";
+backPropImg.onLoad = testLoad();
 var spr_Tiles    = new Sprite(backPropImg, 16, 16, 8, 8);
 backPropImg.onload = function(){spr_Tiles    = new Sprite(backPropImg, 16, 16, 8, 8);}
 
 
 
 var imgSoundIcon    = new Image();
-imgSoundIcon.src    = "sprites/soundIcon.png"
+imgSoundIcon.src = "sprites/soundIcon.png";
+imgSoundIcon.onLoad = testLoad();
 var spr_Sound    = new Sprite(imgSoundIcon, 16, 16, 0, 0);
 
 var imgArrowButton  = new Image();
-imgArrowButton.src  = "sprites/arrowButton.png";
+imgArrowButton.src = "sprites/arrowButton.png";
+imgArrowButton.onLoad = testLoad();
 var spr_arrowButton = new Sprite(imgArrowButton, 9, 16, 0, 0);
 
 var spotImg      = new Image();
-spotImg.src      = "sprites/Spot.png";
+spotImg.src = "sprites/Spot.png";
+spotImg.onLoad = testLoad();
 var spr_Spot     = new Sprite(spotImg, 16, 8, 8, 4);
 
 var coinImg      = new Image();
-coinImg.src      = "sprites/Coins.png";
+coinImg.src = "sprites/Coins.png";
+coinImg.onLoad = testLoad();
 var spr_Coin     = new Sprite(coinImg, 16, 16, 0, 0);
 
 var exclImg      = new Image();
-exclImg.src      = "sprites/exclamation.png";
+exclImg.src = "sprites/exclamation.png";
+exclImg.onLoad = testLoad();
 var spr_Excl     = new Sprite(exclImg, 16, 16, 0, 0);
 
 var friendImg    = new Image();
-friendImg.src    = "sprites/Friend Icon.png";
+friendImg.src = "sprites/Friend Icon.png";
+friendImg.onLoad = testLoad();
 var spr_Friend   = new Sprite(friendImg, 16, 16, 8, 8);
 
 var fenceImg     = new Image();
-fenceImg.src     = "sprites/fence sheet.png";
+fenceImg.src = "sprites/fence sheet.png";
+fenceImg.onLoad = testLoad();
 var spr_Fence    = new Sprite(fenceImg, 16, 16, 0, 0);
 
 
