@@ -315,7 +315,7 @@ function levelStep(){
               let xx = xStart + ((i % imgRow)*xSpacing);
               let yy = yStart + (Math.floor(i/imgRow)*ySpacing);
 
-              ctx.drawImage(ghosty, 0, 0, 16, 16, xx, yy, 16*imgScl, 16*imgScl);
+              ctx.drawImage(imgGhosty, 0, 0, 16, 16, xx, yy, 16*imgScl, 16*imgScl);
             }
           }
         }
@@ -415,7 +415,7 @@ function levelStep(){
   if(player.spdBoostTimer > 0){
     ctx.save();
     ctx.globalAlpha = Math.min(1, player.spdBoostTimer/150);
-    ctx.drawImage(speedIcon, 0, 0, 16, 16, 64, 100, 16*4, 16*4);
+    ctx.drawImage(imgSpeedIcon, 0, 0, 16, 16, 64, 100, 16*4, 16*4);
     ctx.restore();
   }
 }
