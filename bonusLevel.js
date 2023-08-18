@@ -197,7 +197,8 @@ function bonusStep(){
       let yy = (height/1.5)+20;
 
       if(playerB.coinsB > 0){
-        spr_Coin.drawFix(xx, yy, 0, 0, 4, 4, 0, 0, 8, 0, 8);
+        spr_Coin.drawFix(xx, yy, 0, 0, 4, 4, 0, 0, 0, 0, 0);
+        //ctx.textAlign = "";
         ctx.fillText("x" + playerB.coinsB + " = " + (100*playerB.coinsB), xx + (16*4) + 10, yy);
         yy += (4*8) + 20;
       }
