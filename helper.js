@@ -112,6 +112,8 @@ var fencesB = [];
 // Particle Array
 var particles = [];
 
+var groundType = 0;
+
 
 
 
@@ -296,6 +298,8 @@ function bonusRoomCreate(levelNum) {
     gravestonesB = [];
     fencesB = [];
 
+    groundType = 0;
+
     playerSpeed = 9;
 
     playerB = new PlayerB();
@@ -305,8 +309,8 @@ function bonusRoomCreate(levelNum) {
     addObj(playerB);
 
     // Buttoms
-    let buttomL = new Button((width / 2) - (12 * spr_arrowButton.width / 2) + 500, (height / 2) - (12 * spr_arrowButton.height / 2), 10, 10);
-    buttomL.sprite = spr_arrowButton;
+    let buttomL = new Button((width / 2) - (12 * spr_ArrowButton.width / 2) + 500, (height / 2) - (12 * spr_ArrowButton.height / 2), 10, 10);
+    buttomL.sprite = spr_ArrowButton;
     buttomL.scl = 12;
     buttomL.boundBox = new BoundBox(-1, -1, 10, 17);
     buttomL.onClick = function () {
@@ -314,8 +318,8 @@ function bonusRoomCreate(levelNum) {
     };
     addButton(buttomL);
 
-    let buttomR = new Button((width / 2) - (12 * spr_arrowButton.width / 2) - 500, (height / 2) - (12 * spr_arrowButton.height / 2), 10, 10);
-    buttomR.sprite = spr_arrowButton;
+    let buttomR = new Button((width / 2) - (12 * spr_ArrowButton.width / 2) - 500, (height / 2) - (12 * spr_ArrowButton.height / 2), 10, 10);
+    buttomR.sprite = spr_ArrowButton;
     buttomR.scl = 12;
     buttomR.flip = true;
     buttomR.boundBox = new BoundBox(-1, -1, 10, 17);
@@ -380,7 +384,7 @@ function roomCreate(levelNum) {
     gravestonesB = [];
     fencesB = [];
 
-
+    groundType = 0;
 
 
 
@@ -448,6 +452,7 @@ function roomCreate(levelNum) {
         case "creeper":
             graveIndex = [1, 2, 5, 6, 9, 10, 13, 14, 19, 20, 26, 27, 28, 29];
             itemProportions = [0, 20, 2, 8, 5, 1];
+            groundType = 2;
             break;
 
         case "rat":
@@ -461,6 +466,7 @@ function roomCreate(levelNum) {
         case "chess":
             graveIndex = [0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22, 25, 27, 29, 31];
             itemProportions = [5, 2, 2, 15, 1, 10];
+            groundType = 1;
             break;
 
     }
@@ -493,7 +499,7 @@ function roomCreate(levelNum) {
 
             let yborder = height / 10;
             let ystart = height / 12;
-            let yoffset = (height - (yborder * 2) - ystart) / 3;
+            let yoffset = (height - (yborder * 2) - 20 - ystart) / 3;
             let yy = ystart + yborder + (iy * yoffset) - 20;
 
 
@@ -543,7 +549,7 @@ function roomCreate(levelNum) {
     // Background Tiles
     let tilesAvailable = [];
     let tileScl = 4;
-    let tiles = Math.floor(randomRange(10, 18));
+    let tiles = Math.floor(randomRange(3, 6));
     let tilesX = Math.ceil(width / (16 * tileScl));
     let tilesY = Math.ceil(height / (16 * tileScl));
     for (let i = 0; i < tilesX * tilesY; i++) {
@@ -555,10 +561,21 @@ function roomCreate(levelNum) {
         let val = tilesAvailable[selectedIndex];
         tilesAvailable.splice(selectedIndex, 1);
 
-        let tileType = Math.floor(Math.random() * 4);
+
+
+        let tileType;
+        if(Math.random()<=0.6){
+            tileType = 0;
+        } else if (Math.random() <= 0.6){
+            tileType = 3;
+        } else {
+            tileType = 2;
+        }
+
+
         let xx = ((val % tilesX) * 16 * tileScl) + randomRange(-4, 4);
         let yy = (Math.floor(val / tilesX) * 16 * tileScl) + randomRange(-4, 4);
-        let tileNew = new Tile(xx - tileScl * 8, yy - tileScl * 8, tileScl, tileType*16, 0);
+        let tileNew = new Tile(xx - tileScl * 8, yy - tileScl * 8, tileScl, tileType, 0);
         backgroundTiles.push(tileNew);
     }
 
@@ -880,17 +897,15 @@ function clamp(val, min, max) {
 
 function gravestoneCheck() {
     let len = gravestones.length;
-    allSouls = true;
+    
     for (let i = 0; i < len; i++) {
         let grav = gravestones[i];
         if (!grav.opened) {
-            if (!grav.broken) {
-                return false;
-            }
-            allSouls = false;
+            return false;
         }
     }
 
+    allSouls = true;
     return true;
 }
 

@@ -66,6 +66,29 @@ function levelStep(){
   }
 
 
+ 
+  if(groundType == 1){
+    ctx.fillStyle = "rgb(40, 40, 40)";
+    let sqrWid = 145;
+    let sqrHei = 165;
+    let startX = 100;
+    let startY = 90;
+
+    for(let i = -1; i <  5; i++){
+      let odd = 0;
+      if(i== 1 || i == 3 || i == -1 || i == 5){
+        odd = 1;
+      }
+
+      for(let j = -1; j < 5; j++){
+
+
+
+        ctx.fillRect(startX + sqrWid*((j*2)+odd), startY + sqrHei*i, sqrWid, sqrHei);
+
+      }
+    }
+  }
 
 
   let arrLength;

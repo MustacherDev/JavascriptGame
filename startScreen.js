@@ -20,8 +20,12 @@ function loadScreen(){
     ctx.fillText("Tap to start!", width/2, height - 100);
 
     if(click){
-      first = false;
-      state = levelStep;
+      if(allDataIsLoaded || checkCompleteImages()){
+        createSprites();
+        gameRestart();
+        first = false;
+        state = levelStep;
+      }
     }
 
   } else {

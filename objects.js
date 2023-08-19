@@ -798,15 +798,13 @@ function Player(x, y){
         buttonClick = true;
         if(hoverGravestone != -1){
           grvStn = gravestones[hoverGravestone];
-          if(!grvStn.broken){
-            canAccessGrave = true;
-          }
+          canAccessGrave = true;
         }
 
         levelEntering = false;
 
         if(canAccessGrave){
-            if(this.target == grvStn && !grvStn.opened && !grvStn.broken && this.hidden){
+            if(this.target == grvStn && !grvStn.opened && (this.hidden || grvStn.broken)){
               // Opening a gravestone
               grvStn.open();
               hit.play();
@@ -885,7 +883,9 @@ function Player(x, y){
           this.moving = false;
           if(this.hidding){
             this.hidding = false;
-            this.hidden = true;
+            if(!this.target.broken){
+              this.hidden = true;
+            }
           }
         }
       }
@@ -974,9 +974,9 @@ function Gravestone(x, y, type, content){
       this.boundBox = (new BoundBox(0, 1, 18, 18)).scale(this.scl, this.scl);
       break;
 
-default:
-this.boundBox = (new BoundBox(0, 1, 18, 18)).scale(this.scl, this.scl);
-break;
+    default:
+    this.boundBox = (new BoundBox(0, 1, 18, 18)).scale(this.scl, this.scl);
+    break;
   }
 
   this.getBoundBox = function(){
@@ -1013,10 +1013,6 @@ break;
     addPoints(300, this.x + (Math.random()*this.sprite.width), this.y + (Math.random()*this.sprite.height/2));
     this.partHspd = hforce;
     this.partVspd = vforce;
-
-    if(gravestoneCheck()){
-        finishingLevel = true;
-    }
   }
 
 
@@ -1036,13 +1032,17 @@ break;
     let imgY = 0;
 
 
-    if(!this.broken){
-      if(this.highlight){
+    if(this.highlight){
+      if(this.broken){
+        imgY = 3;
+      } else {
         imgY = 1;
-        this.highlight = false;
       }
+      this.highlight = false;
     } else {
-      imgY = 2;
+      if(this.broken){
+        imgY = 2;
+      }
     }
 
     this.sprite.draw(this.x, this.y, imgX, imgY, scl, scl);
@@ -1054,7 +1054,7 @@ break;
       this.partX += this.partHspd;
       this.partY += this.partVspd;
       this.partAng += 0.2*sign(this.partHspd);
-      this.sprite.drawRot(this.partX, this.partY, imgX, 3, scl, scl, this.partAng, true);
+      this.sprite.drawRot(this.partX, this.partY, imgX, 4, scl, scl, this.partAng, true);
 
       if(this.partX > width+(this.sprite.width*this.scl) || this.partX < -(this.sprite.width*this.scl) || this.partY > height + (this.sprite.height*this.scl) || this.partY < -(this.sprite.height*this.scl)){
         this.partFinished = true;

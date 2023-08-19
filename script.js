@@ -1,7 +1,5 @@
 ctx.font = "40px Fixedsys";
 
-gameRestart();
-
 var state = loadScreen;
 
 function step(){
