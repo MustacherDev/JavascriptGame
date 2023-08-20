@@ -30,11 +30,11 @@ function bonusStep(){
     if(!finishingLevel){
 
 
-      if(input.keyState[65][0]){
+      if(input.keyState[65][1]){
         playerB.move(-1);
       }
 
-      if(input.keyState[68][0]){
+      if(input.keyState[68][1]){
         playerB.move(1);
       }
 
@@ -206,15 +206,22 @@ function bonusStep(){
       if(playerB.finished){
         let sqrL = 8;
         ctx.fillStyle = "rgb(255, 255, 255)";
+        let border = 2;
+        ctx.fillRect(xx -border, yy-border, border +sqrL*23, border + sqrL*3);
         for(let i = 0; i < 3; i++){
           for(let j = 0; j < 23; j++){
+            let xxx = xx + j*sqrL;
+            let yyy = yy + i*sqrL;
             if(((i + j) % 2) == 0){
-              let xxx = xx + j*sqrL;
-              let yyy = yy + i*sqrL;
+              ctx.fillStyle = "rgb(255, 255, 255)";
+              ctx.fillRect(xxx, yyy, sqrL, sqrL);
+            } else {
+              ctx.fillStyle = "rgb(0,0,0)";
               ctx.fillRect(xxx, yyy, sqrL, sqrL);
             }
           }
         }
+
         ctx.textAlign = "start";
         ctx.fillText(" = 2000!", xx + (24*sqrL), yy + 35);
         yy += (3*8) + 20;

@@ -31,24 +31,10 @@ function levelStep(){
 
   // Cricket noise
   // Every 10 seconds it's tried to play
-  if(Math.floor(timeAcc/1000) % 20 == 0){
-    let x = Math.random();
-    if(x < 0.25){
-      let ind = Math.floor(Math.random()*3);
-      switch(ind){
-        case 0:
-          crickets1.play();
-          break;
-
-        case 1:
-          crickets2.play();
-          break;
-
-        case 2:
-          crickets3.play();
-          break;
-      }
-    }
+  alarmCrickets.update(timeAdd);
+  if(alarmCrickets.check()){
+    alarmCrickets.reset();
+    playCrickets();
   }
 
 
@@ -255,6 +241,10 @@ function levelStep(){
   // Rain
   rain.update();
 
+  ghostyWheel.update(timeAdd);
+  ghostyWheel.show();
+
+
 
   /// Timers And Game States
   // Adds time to the timeAcc counting variable
@@ -297,12 +287,20 @@ function levelStep(){
           }
 
           if(winTimer <= 6000){
+
+           
+
+
             let invTime = 6000 - winTimer;
             let gTNum = Math.floor(invTime*(32/5600));
             let gNum = Math.min(gTNum, ghostys);
 
             if((gTNum <= ghostys) && invTime > ghostyCounter*175){
               ghostyCounter++;
+
+              ghostyWheel.addGhosty();
+
+
               addPoints(200, -200 + (width/2) + Math.random()*400, -200 + (height/2) + Math.random()*400);
               if(blip.currentTime != 0){
                 blip.pause();
@@ -325,6 +323,7 @@ function levelStep(){
               ctx.globalAlpha = 1;
             }
 
+            /*
             let imgRow = 8;
             let imgScl = 3;
             let xWid = width/4;
@@ -340,6 +339,7 @@ function levelStep(){
 
               ctx.drawImage(imgGhosty, 0, 0, 16, 16, xx, yy, 16*imgScl, 16*imgScl);
             }
+            */
           }
         }
         winTimer -= timeAdd;

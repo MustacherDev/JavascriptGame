@@ -247,8 +247,8 @@ function DeathB(x, y, facing){
 
     this.sprite.draw(this.x, this.y + yAdd, imgX, imgY, -this.scl*this.facing, this.scl, true);
 
-    this.getSightBound().show(0, 0);
-    this.getAttackBound().show(0, 0);
+    //this.getSightBound().show(0, 0);
+    //this.getAttackBound().show(0, 0);
 
   }
 
@@ -472,31 +472,16 @@ function createRows(rowNum, time){
     rowList.push(type);
 
     // Adding Gravestones of the Row
-    if(type.charAt(0) == "G"){
-      let grav = new GravestoneB(getSlotX(1), yyy, Math.floor(randomRange(0, 3)));
-      if(Math.random() < 0.2){
-        grav.broken = true;
-        grav.partFinished = true;
-      }
-      addGravestone(grav);
-    }
 
-    if(type.charAt(1) == "G"){
-      let grav = new GravestoneB(getSlotX(0), yyy, Math.floor(randomRange(0, 3)));
-      if(Math.random() < 0.2){
-        grav.broken = true;
-        grav.partFinished = true;
+    for(let j = 0; j < 2; j++){
+      if(type.charAt(j) == "G"){
+        let grav = new GravestoneB(getSlotX(1-j), yyy, Math.floor(randomRange(0, 3)));
+        if(Math.random() < 0.2){
+          grav.broken = true;
+          grav.partFinished = true;
+        }
+        addGravestone(grav);
       }
-      addGravestone(grav);
-    }
-
-    if(type.charAt(2) == "G"){
-      let grav = new GravestoneB(getSlotX(-1), yyy, Math.floor(randomRange(0, 3)));
-      if(Math.random() < 0.2){
-        grav.broken = true;
-        grav.partFinished = true;
-      }
-      addGravestone(grav);
     }
 
 
@@ -932,7 +917,7 @@ function PlayerB(){
   }
 
   for(let i = 0; i < playerRats; i++){
-    let yy = this.centerY() + (i+1)*30;
+    let yy = this.centerY() + 10 + (i+1)*30;
     let ratBFollow = new RatB(this.centerY(), yy);
     this.addFollower(ratBFollow);
     gridObjects.push(ratBFollow);

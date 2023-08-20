@@ -49,13 +49,21 @@ function Particle(x, y, sprite, scale, speed, direction, life, animate, imgY){
   this.dir = direction;
   this.hspd =  Math.cos(this.dir)*this.spd;
   this.vspd = -Math.sin(this.dir)*this.spd;
+  this.hDamp = 1;
+  this.vDamp = 1;
   this.gravity = 0;
   this.fade = false;
   this.fadeLife = this.life;
 
   this.frames = 0;
 
-  this.sprite = sprite;
+  this.spriteParticle = true;
+
+  this.color = "rgb(0, 0, 0)";
+  this.isCircle = false;
+  this.radius = this.scale;
+
+  this.sprite = sprite || spr_Dust;
   this.imgX = Math.floor(Math.random()*(this.sprite.imgNumX/2));
   this.imgY = imgY;
   this.initImg = this.imgX;
@@ -70,9 +78,9 @@ function Particle(x, y, sprite, scale, speed, direction, life, animate, imgY){
 
   this.show = function(){
     this.frames++;
-    if(this.animate){
-      this.imgX = ((Math.floor(this.frames/10) + this.initImg) % this.sprite.imgNumX);
-    }
+
+
+
     ctx.save();
     if(this.fade){
       if(this.life < this.fadeLife){
@@ -81,7 +89,23 @@ function Particle(x, y, sprite, scale, speed, direction, life, animate, imgY){
         ctx.globalAlpha = 1;
       }
     }
+
+    if(this.spriteParticle){
+      if(this.animate){
+        this.imgX = ((Math.floor(this.frames/10) + this.initImg) % this.sprite.imgNumX);
+      }
       this.sprite.drawFix(this.x, this.y, this.imgX, this.imgY, this.xscl, this.yscl, 0, this.sprite.width/2, this.sprite.height/2, this.sprite.xoffset, this.sprite.yoffset);
+    } else {
+      if(this.isCircle){
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      } else {
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x - this.radius, this.y - this.radius, this.radius*2, this.radius*2);
+      }
+    }
     ctx.restore();
 
   }
@@ -89,6 +113,9 @@ function Particle(x, y, sprite, scale, speed, direction, life, animate, imgY){
   this.update = function(){
     this.x += this.hspd;
     this.y += this.vspd;
+
+    this.hspd *= this.hDamp;
+    this.vspd *= this.vDamp;
 
     this.vspd += this.gravity;
 
@@ -485,6 +512,9 @@ function Ghosty(x, y){
             death.attacking = false;
             this.attached = true;
 
+            snd_ratHit.currentTime = 0;
+            snd_ratHit.play();
+
             this.xAt = -death.x + this.x;
             this.yAt = -death.y + this.y;
           }
@@ -509,6 +539,53 @@ function Ghosty(x, y){
     }
   }
 }
+
+function GhostyWheel(x, y, num, radius){
+  this.x = x;
+  this.y = y;
+  this.radius = radius;
+  this.sprite = spr_Ghosty;
+
+  this.totalNum = num;
+  this.visibleNum = 0;
+
+  this.phase = 0;
+
+
+
+
+  this.addGhosty = function(){
+    if(this.visibleNum < this.totalNum){
+      this.visibleNum++;
+    }
+  }
+
+  this.update = function(elapsedTime){
+    this.phase += elapsedTime;
+    //this.phase += 0.5;
+  }
+
+  this.show = function(){
+
+    let rotatePhase = this.phase/3000;
+    let wavePhase = this.phase/250;
+    let waveNum = 5;
+    let radWave = this.radius/32;
+
+    for(let i = 0; i < this.visibleNum; i++){
+      let ang = rotatePhase + i*(Math.PI*2/this.totalNum);
+      let rad = this.radius +  radWave*Math.sin(wavePhase + i*(Math.PI*2*waveNum/this.totalNum));
+
+      let xx = this.x + Math.cos(ang)*rad*2;
+      let yy = this.y + Math.sin(ang)*rad;
+
+      this.sprite.draw(xx,  yy, 0, 0, 3, 3, true);
+    }
+  }
+}
+
+
+
 
 
 function Spot(x,y,life){
@@ -603,8 +680,8 @@ function Player(x, y){
 
   this.pickFlower = function(flowerType){
     if(this.flowers.length > 0){
-      let flowerTexts = ["Another Flower", "FlOwEr", "It is indeed a flower", "So many flowers, where are the bees?", "Re wolf", "An other flower", "One more flower", "Why do these rats like flowers?", "A flower again", "More flowers!"];
-      addText(flowerTexts[Math.floor(Math.random()*flowerTexts.length)], this.x + randomRange(-20, 20), this.y + randomRange(-20, -10));
+      let flowerTexts = ["Another Flower", "Fl0w3r", "Ow! Fler", "FlowError", "ReWolf", "Flowey", "Lower F", "We Flor", "Flor", "W.F. Lore", "Flour", "Wolfer", "Fruit?", "Fowler", "WONDROUS [[Limited Time Offer]] FLOWER FANTASTICA"];
+      addText(flowerTexts[Math.floor(Math.random()*flowerTexts.length)], this.x + randomRange(-20, 20), this.y + randomRange(-20, -10), 100);
     } else {
       addText("A Flower...", this.x + randomRange(-20, 20), this.y + randomRange(-20, -10));
     }
@@ -809,7 +886,7 @@ function Player(x, y){
               grvStn.open();
               hit.play();
               death.playerNoise();
-              view.screenShake(5);
+              //view.screenShake(1);
             } else {
               // Hiding in a gravestone
               this.target  = grvStn;
@@ -985,6 +1062,31 @@ function Gravestone(x, y, type, content){
 
   this.open = function(){
     this.opened = true;
+
+    let dirtParticles = Math.floor(Math.random()*5) + 8;
+    for(let i = 0; i < dirtParticles; i++){
+
+      let part = new Particle(this.x + (this.sprite.width*this.scl)/2 + randomRange(-5*this.scl, 5*this.scl), this.y + (this.sprite.height*this.scl)*0.8);
+      part.gravity = 0.2;
+      part.life = 200;
+      part.fade = true;
+      part.fadeLife = part.life/2;
+      part.hspd = Math.random()*4 - 2;
+      part.vspd = -Math.random()*5 - 1;
+
+      let hue = 30;
+      let sat = 70;
+      let light = 20 + Math.floor(Math.random()*6);
+
+      part.color = 'hsl('+ hue +','+sat+'%,'+light+'%)';
+      part.isCircle = false;
+      part.spriteParticle = false;
+      part.radius = 2 + Math.floor(randomRange(0, 2));
+
+      particles.push(part);
+    }
+
+
     ghostyObjects.push(new Ghosty(this.x + 30, this.y - 40));
     ghostys++;
     if(this.content != "nothing"){
@@ -998,6 +1100,10 @@ function Gravestone(x, y, type, content){
     let rand = Math.random();
     if(rand < 0.1 || this.rat){
       let rat = new Rat(this.x + this.scl*4, this.y + (this.scl*10));
+
+
+      snd_squeak.currentTime = 0;
+      snd_squeak.play();
       rats.push(rat);
       addDrawnable(rat);
     }
@@ -1009,6 +1115,8 @@ function Gravestone(x, y, type, content){
 
   this.break = function(hforce, vforce){
     this.broken = true;
+
+    view.screenShake(2);
 
     addPoints(300, this.x + (Math.random()*this.sprite.width), this.y + (Math.random()*this.sprite.height/2));
     this.partHspd = hforce;
@@ -1288,6 +1396,10 @@ function Rat(x, y){
     part.initImg = (this.facing == 1)?0:1;
     part.yscl *= -1;
     particles.push(part);
+
+
+    snd_squeak.currentTime = 0;
+    snd_squeak.play();
 
     snd_ratHit.currentTime = 0;
     snd_ratHit.play();
@@ -1919,9 +2031,13 @@ function Death(x, y, level){
           }
         }
 
+        if(this.ghostyAttached == gravestones.length && !gameover){
+          levelFinish();
+        }
+
         // Shaking
-        this.x += (Math.random()*1 +(-0.25))*this.ghostyAttached;
-        this.y += (Math.random()*1 +(-0.25))*this.ghostyAttached;
+        this.x += (Math.random()*1 +(-0.25))*this.ghostyAttached/3;
+        this.y += (Math.random()*1 +(-0.25))*this.ghostyAttached/3;
       }
     }
   }

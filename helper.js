@@ -114,7 +114,7 @@ var particles = [];
 
 var groundType = 0;
 
-
+var ghostyWheel;
 
 
 
@@ -168,6 +168,7 @@ function Input() {
     this.update = function () {
         for (var i = 0; i < 256; i++) {
             this.keyState[i][1] = false;
+            this.keyState[i][2] = false;
         }
     }
 
@@ -209,6 +210,49 @@ var rain = new Rain(0, Math.PI * 1, 0);
 
 
 
+function Alarm(time){
+    this.time = time;
+    this.timer = 0;
+
+    this.reset = function(){
+        this.timer = 0;
+    }
+
+    this.check = function(){
+        return this.timer >= this.time;
+    }
+
+    this.update = function(elapsedTime){
+        if(this.timer < this.time){
+            this.timer += elapsedTime;
+        }
+    }
+}
+
+function playCrickets(){
+    let x = Math.random();
+    if(x < 0.25){
+      let ind = Math.floor(Math.random()*3);
+      switch(ind){
+        case 0:
+          crickets1.play();
+          break;
+
+        case 1:
+          crickets2.play();
+          break;
+
+        case 2:
+          crickets3.play();
+          break;
+      }
+    }
+}
+
+var alarmCrickets = new Alarm(10000);
+
+
+
 
 // Game Command Functions
 function muteButton() {
@@ -233,7 +277,7 @@ function openGravestones() {
 }
 
 function createRats() {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
         let randX = (50 * Math.random()) + width / 2;
         let randY = (50 * Math.random()) + height / 2;
         let rat = new Rat(randX, randY);
@@ -544,6 +588,12 @@ function roomCreate(levelNum) {
 
 
 
+    ghostyWheel = new GhostyWheel(width/2, height/2, gravestones.length, height/3);
+
+
+
+
+
 
 
     // Background Tiles
@@ -752,16 +802,33 @@ canvas.addEventListener("mouseup", function (event) {
 
 
 document.addEventListener('keydown', function (event) {
-    input.keyState[event.keyCode][0] = true;
+    const keyCode = event.keyCode || event.which;
+    if (!input.keyState[keyCode][0]) {
+        input.keyState[keyCode][0] = true; // Set active state
+        input.keyState[keyCode][1] = true; // Set pressed state
+    }
+
+    //input.keyState[event.keyCode][0] = true;
 });
 
 document.addEventListener('keyup', function (event) {
-    input.keyState[event.keyCode][0] = false;
+    const keyCode = event.keyCode || event.which;
+    input.keyState[keyCode][0] = false; // Set inactive state
+    input.keyState[keyCode][2] = true; // Set released state
+
+    //input.keyState[event.keyCode][0] = false;
 });
 
+/*
 document.addEventListener('keypress', function (event) {
+    const keyCode = event.keyCode || event.which;
+    input.keyState[keyCode][0] = false; // Set inactive state
+    input.keyState[keyCode][2] = true; // Set released state
+
+
     input.keyState[event.keyCode][1] = true;
 });
+*/
 
 
 
@@ -951,8 +1018,10 @@ function addButton(obj) {
     sortDrawnable();
 }
 
-function addText(text, x, y) {
-    textObjects.push(new TextObject(x, y, text));
+function addText(text, x, y, life = 50) {
+    let t = new TextObject(x, y, text);
+    t.timer = life;
+    textObjects.push(t);
 }
 
 function sign(val) {

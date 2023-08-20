@@ -152,7 +152,7 @@ var crickets1   = new Audio("audio/Crickets 1.mp3");
 var crickets2   = new Audio("audio/Crickets 2.mp3");
 var crickets3   = new Audio("audio/Crickets 3.mp3");
 
-let vol = 0.01;
+let vol = 0.04;
 
 crickets1.volume = vol;
 crickets2.volume = vol;
@@ -172,6 +172,10 @@ soundsArr.push(snd_deathTemptation);
 var snd_perfect = new Audio("audio/PerfectRun.mp3");
 snd_perfect.volume = 0.6;
 soundsArr.push(snd_perfect);
+
+var snd_squeak = new Audio("audio/squeak.mp3");
+snd_squeak.volume = 0.6;
+soundsArr.push(snd_squeak);
 
 
 var need2Load = 20;
